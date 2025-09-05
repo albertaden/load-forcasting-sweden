@@ -18,7 +18,7 @@ except Exception:
 # ---------------- Settings ----------------
 TZ = "Europe/Stockholm"
 COUNTRY_CODE = "SE"
-DAYS_BACK = 7
+DAYS_BACK = 14
 
 SITE_TITLE = "Sweden Load Dashboard"
 SITE_TAGLINE = "Interactive charts generated from ENTSO-E data"
