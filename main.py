@@ -209,7 +209,7 @@ def main():
 
     df = fetch_load_df(client, COUNTRY_CODE, start, end)
     fig1 = make_actual_load_plot(df, f"Actual Total Load – {COUNTRY_CODE}")
-    fig2 = make_daily_avg_bar_plot(df, "Distribution of Daily Average Load")
+    fig2 = make_daily_avg_bar_plot(df, "Daily Average Load")
 
     fig1_html = fig1.to_html(include_plotlyjs="cdn", full_html=False,
                          config={"displaylogo": False, "responsive": True})
@@ -225,8 +225,8 @@ def main():
         },
         {
             "id": "daily-avg",
-            "title": "Daily Average Distribution",
-            "blurb": "Histogram of the daily mean load across the selected period.",
+            "title": "Daily Average Load",
+            "blurb": "Bar plot of the daily average load the last {DAYS_BACK} days.",
             "fig_html": fig2_html,
         },
     ]
