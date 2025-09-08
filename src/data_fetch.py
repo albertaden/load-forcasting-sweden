@@ -1,6 +1,6 @@
 import pandas as pd
 from entsoe import EntsoePandasClient
-from src.config import TZ, COUNTRY_CODE, DAYS_BACK, SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE
+from config import TZ, COUNTRY_CODE, DAYS_BACK, SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE
 
 # -------------- Data helpers --------------
 def get_time_range(days_back: int):

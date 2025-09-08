@@ -4,10 +4,10 @@ from pathlib import Path
 import pandas as pd
 from entsoe import EntsoePandasClient
 
-from src.config import TZ, COUNTRY_CODE, DAYS_BACK, SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE
-from src.data_fetch import fetch_load_df, get_time_range
-from src.plotting import make_actual_load_plot, make_daily_avg_bar_plot
-from src.page_builder import build_page
+from config import TZ, COUNTRY_CODE, DAYS_BACK, SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE
+from data_fetch import fetch_load_df, get_time_range
+from plotting import make_actual_load_plot, make_daily_avg_bar_plot
+from page_builder import build_page
 
 # Optional: load ENTSOE_API_KEY from a local .env (gitignore this file!)
 try:
