@@ -27,8 +27,10 @@ def fetch_load_df(client: EntsoePandasClient, country_code: str,
 
     # Rename the (single) value column to Load (MW)
     value_cols = [c for c in df.columns if c != "Date"]
+    
     if not value_cols:
         raise ValueError("No value column returned from ENTSO-E.")
+    
     df.rename(columns={value_cols[0]: "Load (MW)"}, inplace=True)
 
     # Enforce dtypes and return only the two columns
