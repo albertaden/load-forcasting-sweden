@@ -4,6 +4,7 @@ from config import TZ, COUNTRY_CODE, DAYS_BACK, SITE_TITLE, SITE_TAGLINE, OUTPUT
 def build_page(fig_sections):
     # NOTE: We DO NOT include a <script src="plotly-latest..."> here.
     # The first figure's HTML will include the correct Plotly JS via include_plotlyjs="cdn".
+    
     sections_html = "\n".join(
         f"""
         <section id="{sec['id']}">
