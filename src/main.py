@@ -53,3 +53,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+# To test locally, run `python src/main.py` in the root folder and open the generated docs/index.html in a browser.
