@@ -33,7 +33,7 @@ jobs:
         env:
           ENTSOE_API_KEY: ${{ secrets.ENTSOE_API_KEY }}
         run: |
-          python main.py
+          python src/main.py
 
       - name: Commit and push if changed
         run: |
