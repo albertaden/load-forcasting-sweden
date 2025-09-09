@@ -9,7 +9,7 @@ from data_fetch import fetch_load_df, get_time_range
 from plotting import make_actual_load_plot, make_daily_avg_bar_plot
 from page_builder import build_page
 
-# Optional: load ENTSOE_API_KEY from a local .env (gitignore this file!)
+# Load ENTSOE_API_KEY from a local .env file
 try:
     from dotenv import load_dotenv
     load_dotenv()
@@ -50,8 +50,11 @@ def main():
     OUTPUT_FILE.write_text(page_html, encoding="utf-8")
 
     print(f" Wrote {OUTPUT_FILE.resolve()}")
+    
+    return df
 
 if __name__ == "__main__":
-    main()
+    results = main()
+    print(results.tail())
     
 # To test locally, run `python src/main.py` in the root folder and open the generated docs/index.html in a browser.
