@@ -60,15 +60,19 @@ def main():
     ]
 
     page_html = build_page(sections)
+    
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     OUTPUT_FILE.write_text(page_html, encoding="utf-8")
-
-    print(f" Wrote {OUTPUT_FILE.resolve()}")
+    
+    print(f"Wrote {OUTPUT_FILE.resolve()} and updated {PARQUET_FILE.resolve()}")
     
     return plot_df
 
 if __name__ == "__main__":
+  
     results = main()
+    
+    # To sanity check last rows
     print(results.tail())
     
 # To test locally, run `python src/main.py` in the root folder and open the generated docs/index.html in a browser.
