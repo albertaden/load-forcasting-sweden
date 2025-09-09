@@ -4,8 +4,11 @@ from pathlib import Path
 import pandas as pd
 from entsoe import EntsoePandasClient
 
-from config import TZ, COUNTRY_CODE, DAYS_BACK, SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE
-from data_fetch import fetch_load_df, get_time_range
+from config import (
+    TZ, COUNTRY_CODE, DAYS_BACK, BACKFILL_DAYS, INITIAL_HISTORY_DAYS,
+    SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE, PARQUET_FILE
+)
+from data_fetch import fetch_load_df, get_time_range, to_display_df, to_storage_df, update_history_parquet
 from plotting import make_actual_load_plot, make_daily_avg_bar_plot
 from page_builder import build_page
 
@@ -28,10 +31,21 @@ def main():
     start, end = get_time_range(DAYS_BACK)
     client = EntsoePandasClient(api_key=api_key)
 
-    df = fetch_load_df(client, COUNTRY_CODE, start, end)
+    # fetch recent
+    recent_display = fetch_load_df(client, COUNTRY_CODE, start, end)
 
-    fig1 = make_actual_load_plot(df, f"Actual Total Load – {COUNTRY_CODE}")
-    fig2 = make_daily_avg_bar_plot(df, "Daily Average Load")
+    # convert to storage schema (UTC) and update parquet
+    recent_store = to_storage_df(recent_display)
+    hist_df = update_history_parquet(recent_store, PARQUET_FILE)  # expects ['date','load_mw'] UTC
+
+    # build plotting window from history, then convert to your display schema
+    max_dt = hist_df["date"].max()
+    cut = max_dt - pd.Timedelta(days=DAYS_BACK)
+    plot_store = hist_df[hist_df["date"] >= cut].copy()
+    plot_df = to_display_df(plot_store, TZ)   # returns ['Date','Load (MW)']
+
+    fig1 = make_actual_load_plot(plot_df, f"Actual Total Load – {COUNTRY_CODE}")
+    fig2 = make_daily_avg_bar_plot(plot_df, "Daily Average Load")
 
     fig1_html = fig1.to_html(include_plotlyjs="cdn", full_html=False,
                              config={"displaylogo": False, "responsive": True})
@@ -51,7 +65,7 @@ def main():
 
     print(f" Wrote {OUTPUT_FILE.resolve()}")
     
-    return df
+    return plot_df
 
 if __name__ == "__main__":
     results = main()
