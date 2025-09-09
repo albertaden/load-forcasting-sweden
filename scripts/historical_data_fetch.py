@@ -12,7 +12,7 @@ from pathlib import Path
 import pandas as pd
 from entsoe import EntsoePandasClient
 
-# Request in your familiar TZ; store in UTC (safer across DST)
+# Request in your familiar TZ; store in UTC 
 QUERY_TZ = "Europe/Stockholm"
 STORE_TZ = "UTC"
 
@@ -115,6 +115,7 @@ def main():
 
     start = pd.Timestamp(args.start, tz=QUERY_TZ)
     end = pd.Timestamp(args.end, tz=QUERY_TZ)
+    
     if end <= start:
         raise SystemExit("end must be after start")
 
