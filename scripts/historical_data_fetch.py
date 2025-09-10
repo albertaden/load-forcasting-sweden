@@ -149,5 +149,5 @@ if __name__ == "__main__":
 # $env:ENTSOE_API_KEY="your_key_here"
 
 # Then run the script, e.g. to backfill Swedish load from 2015-01-01 to 2025-09-08:
-# python scripts/backfill_load.py --dataset load --country SE --start 2015-01-01 --end 2025-09-08 --out data/load_SE.parquet
+# python scripts/historical_data_fetch.py --dataset load --country SE --start 2015-01-01 --end 2025-09-10 --out data/load_se.parquet
 
