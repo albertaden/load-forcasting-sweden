@@ -61,6 +61,7 @@ def build_page(fig_sections):
         <h2>Notes</h2>
         <ul>
           <li>Times are displayed in {TZ}.</li>
+          <li>A load for a specific hour indicates the average load during a one hour period. As an example, the data point at 15:00 indicates the load between 15:00-16:00.</li>
           <li>The daily average chart aggregates the hourly values by day.</li>
           <li>Data source: ENTSO-E (Actual Total Load for {COUNTRY_CODE}).</li>
         </ul>
