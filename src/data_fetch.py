@@ -18,7 +18,14 @@ def get_time_range(days_back: int):
 def fetch_load_df(client: EntsoePandasClient, country_code: str,
                   start: pd.Timestamp, end: pd.Timestamp) -> pd.DataFrame:
     
-    """Return exactly two columns: Date (tz-aware) and Load (MW)."""
+    """
+    
+    Return exactly two columns: Date (tz-aware) and Load (MW).
+    Note that the load data is typically available with a delay of 1 hour.
+    
+    (The data is published and retrivable 1 hour after the time period has passed) 
+    
+    """
     
     data = client.query_load(country_code, start=start, end=end)
 
