@@ -41,8 +41,12 @@ def main():
     # build plotting window from history, then convert to your display schema
     max_dt = hist_df["date"].max()
     cut = max_dt - pd.Timedelta(days=DAYS_BACK)
+    
     plot_store = hist_df[hist_df["date"] >= cut].copy()
-    plot_df = to_display_df(plot_store, TZ)   # returns ['Date','Load (MW)']
+    
+    # This cut the plot to last 14 days
+    #plot_df = to_display_df(plot_store, TZ)   # returns ['Date','Load (MW)']
+    plot_df = to_display_df(hist_df.copy(), TZ)   # returns ['Date','Load (MW)']
 
     fig1 = make_actual_load_plot(plot_df, f"Actual Total Load – {COUNTRY_CODE}")
     fig2 = make_daily_avg_bar_plot(plot_df, "Daily Average Load")
