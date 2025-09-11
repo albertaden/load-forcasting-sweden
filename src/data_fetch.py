@@ -106,3 +106,5 @@ def update_history_parquet_multi(new_df: pd.DataFrame, parquet_path: Path) -> pd
     combo.to_parquet(parquet_path, index=False)
     
     return combo
+
+#########################################################################################

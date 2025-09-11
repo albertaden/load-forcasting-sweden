@@ -17,6 +17,7 @@ ZONE_CODES = {
     "SE3": "SE_3",
     "SE4": "SE_4",
 }
+
 TARGET_ZONES = ["SE_total", "SE1", "SE2", "SE3", "SE4"]
 
 # Site settings

@@ -23,6 +23,7 @@ except Exception:
 
 
 def main():
+    
     api_key = os.getenv("ENTSOE_API_KEY")
     if not api_key:
         raise SystemExit("Missing ENTSOE_API_KEY")
