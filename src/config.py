@@ -6,6 +6,7 @@ COUNTRY_CODE = "SE"
 DAYS_BACK = 14
 BACKFILL_DAYS = 3            # re-fetch recent days to capture revisions
 INITIAL_HISTORY_DAYS = 60    # used only on first run (no parquet yet)
+INITIAL_DAYS = 14            # initial viewport in plot
 
 # Site settings
 SITE_TITLE = "Sweden Load Dashboard"
