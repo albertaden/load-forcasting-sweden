@@ -48,7 +48,9 @@ def main():
     #plot_df = to_display_df(plot_store, TZ)   # returns ['Date','Load (MW)']
     plot_df = to_display_df(hist_df.copy(), TZ)   # returns ['Date','Load (MW)']
 
-    fig1 = make_actual_load_plot(plot_df, f"Actual Total Load – {COUNTRY_CODE}")
+    #fig1 = make_actual_load_plot(plot_df, f"Actual Total Load – {COUNTRY_CODE}")
+    fig1 = make_actual_load_plot(plot_df, f"")
+
     
     #fig2 = make_daily_avg_bar_plot(plot_df, "Daily Average Load")
 
@@ -65,7 +67,7 @@ def main():
     
     sections = [
         {"id": "actual-load", "title": "Actual Total Load",
-         "blurb": f"Hourly total load for {COUNTRY_CODE}.", "fig_html": fig1_html},
+         "blurb": f"Measured total load each hour for {COUNTRY_CODE}.", "fig_html": fig1_html},
     ]
 
     page_html = build_page(sections)
