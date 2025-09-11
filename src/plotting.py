@@ -43,6 +43,7 @@ def make_actual_load_plot(df: pd.DataFrame, title: str, initial_days: int = INIT
 
 #########################################################################################
 
+# TODO: Add automatic switching between summer time and winter time
 def make_all_zones_plot(df_long: pd.DataFrame, title: str, tz_label: str, initial_days: int = INITIAL_DAYS):
     """
     
