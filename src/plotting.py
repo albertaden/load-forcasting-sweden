@@ -1,6 +1,10 @@
 import pandas as pd
 import plotly.express as px
-from config import TZ, COUNTRY_CODE, DAYS_BACK, SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE, INITIAL_DAYS
+from config import (
+    TZ, COUNTRY_CODE, DAYS_BACK, BACKFILL_DAYS, INITIAL_HISTORY_DAYS,
+    SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE, PARQUET_FILE, 
+    DATA_DIR, ZONE_CODES, TARGET_ZONES, INITIAL_DAYS
+)
 
 
 # The load shown a specific hour is the average load over that hour: 
@@ -37,32 +41,67 @@ def make_actual_load_plot(df: pd.DataFrame, title: str, initial_days: int = INIT
     )
     return fig
 
+#########################################################################################
 
-#TODO: Should look into removing/ changing this, not sure if daily avg is useful
-def make_daily_avg_bar_plot(df: pd.DataFrame, title: str):
+def make_all_zones_plot(df_long: pd.DataFrame, title: str, tz_label: str, initial_days: int = INITIAL_DAYS):
+    """
     
-    # Aggregate hourly → daily average
-    daily = (
-        df.assign(day=df["Date"].dt.floor("D"))
-          .groupby("day", as_index=False)["Load (MW)"].mean()
-          .rename(columns={"day": "Date", "Load (MW)": "Daily Avg (MW)"})
-    )
+    df_long: columns ["Date","Load (MW)","zone"] in display TZ.
+    Includes 'SE_total' and 'SE1'..'SE4' in the same frame.
+    
+    """
+    # Put total first in legend
+    order = ["SE_total", "SE1", "SE2", "SE3", "SE4"]
+    
+    if "zone" in df_long.columns:
+        df_long = df_long.copy()
+        df_long["zone"] = pd.Categorical(df_long["zone"], categories=order, ordered=True)
 
-    fig = px.bar(
-        daily,
+    fig = px.line(
+        df_long,
         x="Date",
-        y="Daily Avg (MW)",
+        y="Load (MW)",
+        color="zone",
+        category_orders={"zone": order},
         title=title,
         template="plotly_white",
     )
-    
+
+    # Initial viewport = last N days (data still contains the full range)
+    end = df_long["Date"].max()
+    start = end - pd.Timedelta(days=initial_days)
+
     fig.update_layout(
         hovermode="x unified",
-        xaxis=dict(title="Date"),
-        yaxis=dict(title="Daily average load (MW)"),
+        xaxis=dict(
+            title=f"Date ({tz_label})",
+            range=[start, end],
+            rangeslider=dict(visible=True),
+            rangeselector=dict(
+                buttons=[
+                    dict(count=24, step="hour",  stepmode="backward", label="1d"),
+                    dict(count=3,  step="day",   stepmode="backward", label="3d"),
+                    dict(count=7,  step="day",   stepmode="backward", label="7d"),
+                    dict(count=1,  step="month", stepmode="backward", label="1m"),
+                    dict(count=3,  step="month", stepmode="backward", label="3m"),
+                    dict(count=1,  step="year", stepmode="backward", label="1y"),                    
+                    dict(step="year", stepmode="todate", label="YTD"),
+                    dict(step="all", label="All"),
+                ]
+            ),
+        ),
+        yaxis=dict(title="Load (MW)"),
         margin=dict(l=60, r=30, t=60, b=40),
+        legend_title_text="Zone",
     )
-    
-    fig.update_traces(hovertemplate="Date: %{x|%Y-%m-%d}<br>Daily avg: %{y:.0f} MW<extra></extra>")
-    
+
+    # Make SE_total a bit more prominent
+    for tr in fig.data:
+        if getattr(tr, "name", "") == "SE_total":
+            tr.update(line=dict(width=3))
+        else:
+            tr.update(line=dict(width=2))
+            
     return fig
+
+#########################################################################################
