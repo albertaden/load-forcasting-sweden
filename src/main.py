@@ -49,18 +49,23 @@ def main():
     plot_df = to_display_df(hist_df.copy(), TZ)   # returns ['Date','Load (MW)']
 
     fig1 = make_actual_load_plot(plot_df, f"Actual Total Load – {COUNTRY_CODE}")
-    fig2 = make_daily_avg_bar_plot(plot_df, "Daily Average Load")
+    
+    #fig2 = make_daily_avg_bar_plot(plot_df, "Daily Average Load")
 
     fig1_html = fig1.to_html(include_plotlyjs="cdn", full_html=False,
                              config={"displaylogo": False, "responsive": True})
-    fig2_html = fig2.to_html(include_plotlyjs=False, full_html=False,
-                             config={"displaylogo": False, "responsive": True})
+    #fig2_html = fig2.to_html(include_plotlyjs=False, full_html=False, config={"displaylogo": False, "responsive": True})
 
+    # sections = [
+    #     {"id": "actual-load", "title": "Actual Total Load",
+    #      "blurb": f"Hourly total load for {COUNTRY_CODE}.", "fig_html": fig1_html},
+    #     {"id": "daily-avg", "title": "Daily Average Load",
+    #      "blurb": "Daily averages shown as bars.", "fig_html": fig2_html},
+    # ]
+    
     sections = [
         {"id": "actual-load", "title": "Actual Total Load",
          "blurb": f"Hourly total load for {COUNTRY_CODE}.", "fig_html": fig1_html},
-        {"id": "daily-avg", "title": "Daily Average Load",
-         "blurb": "Daily averages shown as bars.", "fig_html": fig2_html},
     ]
 
     page_html = build_page(sections)
