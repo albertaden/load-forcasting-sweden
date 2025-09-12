@@ -4,10 +4,11 @@ from config import (
     DATA_DIR, ZONE_CODES, TARGET_ZONES
 )
 
+import datetime
 
 def build_page(fig_sections):
-    # NOTE: We DO NOT include a <script src="plotly-latest..."> here.
-    # The first figure's HTML will include the correct Plotly JS via include_plotlyjs="cdn".
+  
+    last_updated = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
     
     sections_html = "\n".join(
         f"""
@@ -73,6 +74,7 @@ def build_page(fig_sections):
 
   <footer>
     Built with Python + Plotly, deployed on GitHub Pages.
+    Last updated: {last_updated}
   </footer>
 </body>
 </html>"""
