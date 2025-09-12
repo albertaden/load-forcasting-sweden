@@ -53,12 +53,15 @@ def make_all_zones_plot(df_long: pd.DataFrame, title: str, tz_label: str, initia
     Includes 'SE_total' and 'SE1'..'SE4' in the same frame.
     
     """
+    
     # Put total first in legend
     order = ["SE_total", "SE1", "SE2", "SE3", "SE4"]
     
     if "zone" in df_long.columns:
         df_long = df_long.copy()
         df_long["zone"] = pd.Categorical(df_long["zone"], categories=order, ordered=True)
+        
+    df_long["Date"] = df_long["Date"] + pd.Timedelta(hours=1)  # Shift by 1 hour to reflect the ending hour of measurement
 
     fig = px.line(
         df_long,
