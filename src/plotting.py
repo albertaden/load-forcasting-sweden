@@ -44,6 +44,8 @@ def make_actual_load_plot(df: pd.DataFrame, title: str, initial_days: int = INIT
 #########################################################################################
 
 # TODO: Add automatic switching between summer time and winter time
+# TODO: Somewhere before plotting, add 1-hour shift to the data so that the hour shown is the hour when the avarage load was measured
+# (e.g. the load shown at 01:00 is the average load from 01:00 to 01:59) CHANGE THIS
 def make_all_zones_plot(df_long: pd.DataFrame, title: str, tz_label: str, initial_days: int = INITIAL_DAYS):
     """
     
