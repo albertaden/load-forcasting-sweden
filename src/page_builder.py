@@ -64,7 +64,7 @@ def build_page(fig_sections):
         <h2>Notes</h2>
         <ul>
           <li>Times are displayed in {TZ}.</li>
-          <li>A load for a specific hour indicates the average load during a one hour period. As an example, the data point at 15:00 indicates the average load between 15:00-16:00.</li>
+          <li>A load for a specific hour indicates the average load during a one hour period. As an example, a data point at 15:00 indicates the average load between 14:00-15:00.</li>
           <li>Data source: ENTSO-E.</li>
         </ul>
       </section>

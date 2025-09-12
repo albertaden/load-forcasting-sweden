@@ -60,7 +60,7 @@ def main():
 
     sections = [
         {"id": "zones-all", "title": "Actual load in bidding zones SE1–SE4 & total load for Sweden",
-         "blurb": f"Actual measured load data from {hist_df['date'].min().date()} to today. Plot is upated automatically every other hour.",
+         "blurb": f"Actual measured load data from 2015-01-01 to today. Plot is upated automatically every other hour.",
          "fig_html": fig_html},
     ]
 
