@@ -4,7 +4,7 @@ from pathlib import Path
 TZ = "Europe/Stockholm"
 COUNTRY_CODE = "SE"
 DAYS_BACK = 14
-BACKFILL_DAYS = 3            # re-fetch recent days to capture revisions
+BACKFILL_DAYS = 3            # re-fetch recent days to capture revisions & backfill if no data is available for a few days/hours
 INITIAL_HISTORY_DAYS = 60    # used only on first run (no parquet yet)
 INITIAL_DAYS = 14            # initial viewport in plot
 
