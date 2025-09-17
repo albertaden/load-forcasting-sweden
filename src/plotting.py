@@ -100,6 +100,9 @@ def make_all_zones_plot(df_long: pd.DataFrame, title: str, tz_label: str, initia
         margin=dict(l=60, r=30, t=60, b=40),
         legend_title_text="Zone",
     )
+    
+    # Force step-like plotting
+    fig.update_traces(line_shape="hv")
 
     # Make SE_total a bit more prominent
     for tr in fig.data:

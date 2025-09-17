@@ -51,6 +51,9 @@ def main():
 
     # Convert back to display schema in TZ (all zones)
     plot_df = to_display_df(hist_df.copy(), TZ)  # -> ["Date","Load (MW)","zone"]
+    
+    # Adjust hour so that the hour shown is average load over that (previous) hour
+    plot_df["Date"] = plot_df["Date"] - pd.Timedelta(hours=1)
 
     # Build combined multi-line plot
     fig = make_all_zones_plot(plot_df, "", tz_label=TZ, initial_days=DAYS_BACK)
