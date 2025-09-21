@@ -21,8 +21,8 @@ ZONE_CODES = {
 TARGET_ZONES = ["SE_total", "SE1", "SE2", "SE3", "SE4"]
 
 # Site settings
-SITE_TITLE = "Sweden Load Dashboard"
-SITE_TAGLINE = "Interactive charts generated from ENTSO-E data"
+SITE_TITLE = "Load Dashboard Sweden"
+SITE_TAGLINE = "(Nice welcoming message) Interactive charts generated from ENTSO-E data"
 
 # Output
 OUTPUT_DIR = Path("docs")
