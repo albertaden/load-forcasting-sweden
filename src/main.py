@@ -61,7 +61,7 @@ def main():
         max_loads.append({
             "year": year,
             "Date": max_load["Date"],
-            "Load": max_load["Load (MW)"],
+            "Load (MW)": max_load["Load (MW)"],
         })
 
     yearly_peaks = pd.DataFrame(max_loads).sort_values("year")
@@ -88,7 +88,7 @@ def main():
             {
         "id": "peak-loads",
         "title": "Yearly Peak Loads",
-        "blurb": "Highest hourly load observed for each year.",
+        "blurb": "Highest hourly load observed per year.",
         "fig_html": peaks_table_html},
     ]
 
