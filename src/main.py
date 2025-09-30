@@ -52,19 +52,44 @@ def main():
     # Convert back to display schema in TZ (all zones)
     plot_df = to_display_df(hist_df.copy(), TZ)  # -> ["Date","Load (MW)","zone"]
     
-    # Adjust hour so that the hour shown is average load over that (previous) hour
-    plot_df["Date"] = plot_df["Date"] - pd.Timedelta(hours=1)
+    # Store max load per year for analysis
+    max_loads = []
+
+    for year in plot_df["Date"].dt.year.unique():
+        yearly_data = plot_df[plot_df["Date"].dt.year == year]
+        max_load = yearly_data.sort_values(by="Load (MW)", ascending=False).iloc[0]
+        max_loads.append({
+            "year": year,
+            "Date": max_load["Date"],
+            "Load": max_load["Load (MW)"],
+        })
+
+    yearly_peaks = pd.DataFrame(max_loads).sort_values("year")
+
+    yearly_peaks["Date"] = yearly_peaks["Date"].dt.strftime("%Y-%m-%d %H:%M")
+    
+    # Looks good!
+    print("Yearly peak loads:")
+    print(yearly_peaks.to_string(index=False))
 
     # Build combined multi-line plot
     fig = make_all_zones_plot(plot_df, "", tz_label=TZ, initial_days=DAYS_BACK)
 
+    # Export plot to HTML snippet & Convert yearly peaks to HTML table
     fig_html = fig.to_html(include_plotlyjs="cdn", full_html=False,
                            config={"displaylogo": False, "responsive": True})
+    
+    peaks_table_html = yearly_peaks.to_html(index=False,classes="peak-table",border=0,justify="center",)
 
     sections = [
         {"id": "zones-all", "title": "Actual load in bidding zones SE1–SE4 & total load for Sweden",
          "blurb": f"Actual measured load data from 2015-01-01 to today. Plot is upated automatically every other hour.",
          "fig_html": fig_html},
+            {
+        "id": "peak-loads",
+        "title": "Yearly Peak Loads",
+        "blurb": "Highest hourly load observed for each year.",
+        "fig_html": peaks_table_html},
     ]
 
     page_html = build_page(sections)
