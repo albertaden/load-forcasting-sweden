@@ -28,6 +28,31 @@ def build_page(fig_sections):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{SITE_TAGLINE}">
   <style>
+  
+  /* peak table styling */
+  
+table.peak-table {{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}}
+.peak-table th, .peak-table td {{
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: center;
+  white-space: nowrap;
+}}
+.peak-table th {{
+  background: #f9fafb;
+  font-weight: 600;
+}}
+@media (max-width: 640px) {{
+  .table-wrap {{ overflow-x: auto; }}
+  table.peak-table {{ min-width: 520px; }}
+}}
+
+  /* general page styling */
+
     :root {{
       --maxw: 1100px; --pad: 16px; --accent: #0f766e; --text: #1f2937; --muted: #6b7280; --border: #e5e7eb;
     }}

@@ -32,14 +32,19 @@ ZONE_CODES_EIC = {
 }
 
 def month_ranges(start: pd.Timestamp, end: pd.Timestamp):
+    
     """Yield [a, b) month windows from start (inclusive) to end (exclusive)."""
+    
     for a in pd.date_range(start, end, freq="MS", tz=start.tz):
         b = min(a + pd.offsets.MonthBegin(1), end)
+        
         if a < b:
             yield a, b
 
 def _to_tidy(df_or_s, value_name: str) -> pd.DataFrame:
+    
     """Normalize Series/DataFrame to ['date','<value_name>'] with UTC datetimes."""
+    
     if isinstance(df_or_s, pd.Series):
         df = df_or_s.to_frame(name=value_name)
     else:
@@ -69,14 +74,19 @@ def _to_tidy(df_or_s, value_name: str) -> pd.DataFrame:
           .dropna(subset=["date", value_name])
           .copy()
     )
+    
     tidy["date"] = pd.to_datetime(tidy["date"], utc=True)
     tidy[value_name] = pd.to_numeric(tidy[value_name], errors="coerce")
+    
     return tidy.dropna(subset=[value_name]).sort_values("date").reset_index(drop=True)
 
 def fetch_load_chunk(client: EntsoePandasClient, area_code: str,
                      start: pd.Timestamp, end: pd.Timestamp) -> pd.DataFrame:
+    
     """One area for one month window → ['date','load_mw'] UTC."""
+    
     res = client.query_load(area_code, start=start, end=end)
+    
     return _to_tidy(res, value_name="load_mw")
 
 def parse_zones_arg(zones_csv: str, mapping: dict[str, str]) -> list[tuple[str, str]]:
@@ -129,9 +139,11 @@ def main():
     
     for a, b in month_ranges(start, end):
         ym = a.strftime("%Y-%m")
+        
         for label, area in zones:
             print(f"Fetching {label} ({area}) {ym} ...", flush=True)
             df = fetch_load_chunk(client, area, a, b)
+            
             if not df.empty:
                 df["zone"] = label
                 frames.append(df)
