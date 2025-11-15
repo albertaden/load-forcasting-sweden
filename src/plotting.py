@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+
 from config import (
     TZ, COUNTRY_CODE, DAYS_BACK, BACKFILL_DAYS, INITIAL_HISTORY_DAYS,
     SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE, PARQUET_FILE, 
@@ -39,11 +40,11 @@ def make_actual_load_plot(df: pd.DataFrame, title: str, initial_days: int = INIT
         yaxis=dict(title="Load (MW)"),
         margin=dict(l=60, r=30, t=60, b=40),
     )
+    
     return fig
 
 #########################################################################################
 
-# TODO: Add automatic switching between summer time and winter time
 # TODO: Somewhere before plotting, add 1-hour shift to the data so that the hour shown is the hour when the avarage load was measured
 # (e.g. the load shown at 01:00 is the average load from 01:00 to 01:59) CHANGE THIS
 def make_all_zones_plot(df_long: pd.DataFrame, title: str, tz_label: str, initial_days: int = INITIAL_DAYS, order: list[str] = TARGET_ZONES) -> px.line:

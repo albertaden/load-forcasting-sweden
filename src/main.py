@@ -13,6 +13,8 @@ from config import (
 from data_fetch import fetch_load_df, get_time_range, to_display_df, to_storage_df, update_history_parquet_multi
 from plotting import make_actual_load_plot, make_all_zones_plot
 from page_builder import build_page
+from analytics import compute_yearly_peak_loads
+
 
 # Load ENTSOE_API_KEY from a local .env file
 try:
@@ -36,40 +38,26 @@ def main():
 
     client = EntsoePandasClient(api_key=api_key)
 
-    # Fetch each zone and convert to UTC storage schema
     storage_chunks = []
     
+    # Fetch each zone and convert to UTC storage schema
     for zl in TARGET_ZONES:
         
         code = ZONE_CODES[zl]
-        display_df = fetch_load_df(client, code, start, end)  # -> ["Date","Load (MW)"]
-        storage_chunks.append(to_storage_df(display_df, zone_label=zl))  # -> ["date","zone","load_mw"]
+        display_df = fetch_load_df(client, code, start, end)  # -> ["Date","Load (MW)"] (TZ)
+        storage_chunks.append(to_storage_df(display_df, zone_label=zl))  # -> ["date","zone","load_mw"] (UTC)
 
     recent_store = pd.concat(storage_chunks, ignore_index=True)
 
-    # Update parquet history and dedupe
+    # Update parquet history
     hist_df = update_history_parquet_multi(recent_store, PARQUET_FILE)
 
-    # Convert back to display schema in TZ (all zones)
-    plot_df = to_display_df(hist_df.copy(), TZ)  # -> ["Date","Load (MW)","zone"]
+    # Convert back all zones to display schema in TZ
+    plot_df = to_display_df(hist_df.copy(), TZ)  # -> ["Date","Load (MW)","zone"] (TZ)
     
-    # Store max load per year for analysis
-    max_loads = []
+    # Calculate yearly peaks
+    yearly_peaks = compute_yearly_peak_loads(plot_df)
 
-    for year in plot_df["Date"].dt.year.unique():
-        yearly_data = plot_df[plot_df["Date"].dt.year == year]
-        max_load = yearly_data.sort_values(by="Load (MW)", ascending=False).iloc[0]
-        max_loads.append({
-            "Year": year,
-            "Date": max_load["Date"],
-            "Load (MW)": max_load["Load (MW)"],
-        })
-
-    yearly_peaks = pd.DataFrame(max_loads).sort_values("Year")
-
-    yearly_peaks["Date"] = yearly_peaks["Date"].dt.strftime("%Y-%m-%d %H:%M")
-    
-    # Looks good!
     print("Yearly peak loads:")
     print(yearly_peaks.to_string(index=False))
 

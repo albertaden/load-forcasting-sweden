@@ -11,6 +11,17 @@ from zoneinfo import ZoneInfo
 
 def build_page(fig_sections):
   
+    """
+    fig_sections: list of dicts with keys:
+      - id: str, section id for linking
+      - title: str, section title
+      - blurb: str, short description
+      - fig_html: str, plotly figure HTML div
+      
+    Returns: full HTML page as a str.
+    
+    """
+  
     last_updated = datetime.now(ZoneInfo(TZ)).strftime("%Y-%m-%d %H:%M %Z")
     
     sections_html = "\n".join(

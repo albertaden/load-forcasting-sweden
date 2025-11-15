@@ -1,6 +1,7 @@
 import pandas as pd
 from entsoe import EntsoePandasClient
 from pathlib import Path
+
 from config import (
     TZ, COUNTRY_CODE, DAYS_BACK, BACKFILL_DAYS, INITIAL_HISTORY_DAYS,
     SITE_TITLE, SITE_TAGLINE, OUTPUT_DIR, OUTPUT_FILE, PARQUET_FILE, 
@@ -105,7 +106,7 @@ def to_display_df(storage_df: pd.DataFrame, tz: str) -> pd.DataFrame:
     Convert storage schema to display schema in tz.
     
     storage_df: columns ["date","zone","load_mw"] in UTC.
-    tz: target timezone string, e.g. "Europe/Stockholm".
+    tz: target timezone string, "Europe/Stockholm".
     
     Returns columns ["Date","Load (MW)","zone"] in tz.
     
