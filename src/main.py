@@ -40,6 +40,7 @@ def main():
     storage_chunks = []
     
     for zl in TARGET_ZONES:
+        
         code = ZONE_CODES[zl]
         display_df = fetch_load_df(client, code, start, end)  # -> ["Date","Load (MW)"]
         storage_chunks.append(to_storage_df(display_df, zone_label=zl))  # -> ["date","zone","load_mw"]

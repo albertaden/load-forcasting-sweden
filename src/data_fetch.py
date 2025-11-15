@@ -36,7 +36,12 @@ def fetch_load_df(client: EntsoePandasClient, country_code: str,
     NOTE: Can take a country code like "SE", "DE", "FR", but also bidding zone codes like "SE_1", "SE_2", etc.
     (The library will convert to the required ENTSO-E format internally.)
     
-    Returns a DataFrame with columns: Date (tz-aware) and Load (MW).
+    client: EntsoePandasClient instance.
+    country_code: e.g. "SE", "SE_1", etc.
+    start: start timestamp.
+    end: end timestamp.
+    
+    Returns: DataFrame with columns: Date (tz-aware) and Load (MW).
     
     NOTE: the load data is typically available with a delay of 1 hour.
     (The data is published and retrivable 1 hour after the time period has passed) 
@@ -45,6 +50,7 @@ def fetch_load_df(client: EntsoePandasClient, country_code: str,
     
     data = client.query_load(country_code, start=start, end=end)
 
+    # Ensure DataFrame format
     if isinstance(data, pd.DataFrame):
         df = data.copy()
     else:
