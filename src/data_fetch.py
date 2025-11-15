@@ -9,27 +9,40 @@ from config import (
 
 #########################################################################################
 
-def get_time_range(days_back: int):
+def get_time_range(days_back: int) -> tuple[pd.Timestamp, pd.Timestamp]:
+    
+    """
+    Get start and end timestamps for fetching data.
+    
+    days_back: how many days back from now to fetch.
+    Returns (start, end) as pd.Timestamp in UTC.
+    
+    """
+    
     now = pd.Timestamp.now(tz=TZ).floor("h")
     start = now - pd.Timedelta(days=days_back)
     end = now
+    
     return start, end
 
 #########################################################################################
 
 def fetch_load_df(client: EntsoePandasClient, country_code: str,
                   start: pd.Timestamp, end: pd.Timestamp) -> pd.DataFrame:
-    """
-
-    Return exactly two columns: Date (tz-aware) and Load (MW).
-    Note that the load data is typically available with a delay of 1 hour.
     
-    Can take a country code like "SE", "DE", "FR", but also bidding zone codes like "SE_1", "SE_2", etc.
+    """
+    Fetch load data from ENTSO-E for a given country code and time range.
+    
+    NOTE: Can take a country code like "SE", "DE", "FR", but also bidding zone codes like "SE_1", "SE_2", etc.
     (The library will convert to the required ENTSO-E format internally.)
     
+    Returns a DataFrame with columns: Date (tz-aware) and Load (MW).
+    
+    NOTE: the load data is typically available with a delay of 1 hour.
     (The data is published and retrivable 1 hour after the time period has passed) 
     
     """
+    
     data = client.query_load(country_code, start=start, end=end)
 
     if isinstance(data, pd.DataFrame):
@@ -61,7 +74,15 @@ def fetch_load_df(client: EntsoePandasClient, country_code: str,
 
 def to_storage_df(display_df: pd.DataFrame, zone_label: str) -> pd.DataFrame:
     
-    """Convert your display schema → storage schema with UTC + zone."""
+    """
+    Convert display schema to storage schema for one zone.
+        
+    display_df: columns ["Date","Load (MW)"] in display TZ.
+    zone_label: e.g. "SE_total", "SE1", etc.
+    
+    Returns columns ["date","zone","load_mw"] in UTC.
+    
+    """
     
     out = display_df.copy()
     out["date"] = out["Date"].dt.tz_convert("UTC")
@@ -74,7 +95,15 @@ def to_storage_df(display_df: pd.DataFrame, zone_label: str) -> pd.DataFrame:
 
 def to_display_df(storage_df: pd.DataFrame, tz: str) -> pd.DataFrame:
     
-    """Convert storage schema back to display schema in tz."""
+    """
+    Convert storage schema to display schema in tz.
+    
+    storage_df: columns ["date","zone","load_mw"] in UTC.
+    tz: target timezone string, e.g. "Europe/Stockholm".
+    
+    Returns columns ["Date","Load (MW)","zone"] in tz.
+    
+    """
     
     out = storage_df.copy()
     out["Date"] = out["date"].dt.tz_convert(tz)
@@ -86,7 +115,16 @@ def to_display_df(storage_df: pd.DataFrame, tz: str) -> pd.DataFrame:
 
 def update_history_parquet_multi(new_df: pd.DataFrame, parquet_path: Path) -> pd.DataFrame:
     
-    """Append + dedupe on ['date','zone'] and write back. Returns full history."""
+    """
+    
+    Append + dedupe on ['date','zone'] and write back.
+    
+    new_df: columns ["date","zone","load_mw"] in UTC.
+    parquet_path: path to parquet file.
+    
+    returns: full history DataFrame with same columns as new_df.
+    
+    """
     
     if parquet_path.exists():
         hist = pd.read_parquet(parquet_path)

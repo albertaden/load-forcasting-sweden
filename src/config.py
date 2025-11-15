@@ -8,8 +8,7 @@ BACKFILL_DAYS = 3            # re-fetch recent days to capture revisions & backf
 INITIAL_HISTORY_DAYS = 60    # used only on first run (no parquet yet)
 INITIAL_DAYS = 14            # initial viewport in plot
 
-# Bidding zones (values are what entsoe-py accepts)
-# entsoe-py usually recognizes: "SE", "SE_1", "SE_2", "SE_3", "SE_4"
+# Bidding zones for entsoe-py to recognize
 ZONE_CODES = {
     "SE_total": "SE",
     "SE1": "SE_1",
