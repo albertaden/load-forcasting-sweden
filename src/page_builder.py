@@ -4,11 +4,13 @@ from config import (
     DATA_DIR, ZONE_CODES, TARGET_ZONES
 )
 
-import datetime
+import datetime, UTC
+from zoneinfo import ZoneInfo
+
 
 def build_page(fig_sections):
   
-    last_updated = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    last_updated = datetime.now(ZoneInfo(TZ)).strftime("%Y-%m-%d %H:%M %Z")
     
     sections_html = "\n".join(
         f"""
