@@ -7,6 +7,7 @@ from config import (
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+# TODO: Add clickable button for Yearly Peaks table (Or think if I even want to keep it)
 
 def build_page(fig_sections):
   
