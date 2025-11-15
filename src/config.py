@@ -21,7 +21,7 @@ TARGET_ZONES = ["SE_total", "SE1", "SE2", "SE3", "SE4"]
 
 # Site settings
 SITE_TITLE = "Load Dashboard Sweden"
-SITE_TAGLINE = "(Nice welcoming message) Interactive charts generated from ENTSO-E data"
+SITE_TAGLINE = "Welcome! This is my ongoing project to visualize and analyze Sweden’s electricity load using ENTSO-E data. For now, it includes interactive charts and yearly peak load statistics. Stay tuned, more features coming soon!"
 
 # Output
 OUTPUT_DIR = Path("docs")

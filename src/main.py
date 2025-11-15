@@ -71,13 +71,13 @@ def main():
     peaks_table_html = yearly_peaks.to_html(index=False,classes="peak-table",border=0,justify="center",)
 
     sections = [
-        {"id": "zones-all", "title": "Actual load in bidding zones SE1–SE4 & total load for Sweden",
-         "blurb": f"Actual measured load data from 2015-01-01 to today. Plot is upated automatically every other hour.",
+        {"id": "zones-all", "title": "Load in bidding zones SE1–SE4 & total load for Sweden",
+         "blurb": f"Load data from 2015-01-01 to last update. The plot is updated automatically every other hour.",
          "fig_html": fig_html},
             {
         "id": "peak-loads",
         "title": "Yearly Peak Loads",
-        "blurb": "Highest hourly load observed per year.",
+        "blurb": "Highest hourly total load observed per year.",
         "fig_html": peaks_table_html},
     ]
 
