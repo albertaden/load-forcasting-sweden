@@ -46,16 +46,16 @@ def make_actual_load_plot(df: pd.DataFrame, title: str, initial_days: int = INIT
 # TODO: Add automatic switching between summer time and winter time
 # TODO: Somewhere before plotting, add 1-hour shift to the data so that the hour shown is the hour when the avarage load was measured
 # (e.g. the load shown at 01:00 is the average load from 01:00 to 01:59) CHANGE THIS
-def make_all_zones_plot(df_long: pd.DataFrame, title: str, tz_label: str, initial_days: int = INITIAL_DAYS):
+def make_all_zones_plot(df_long: pd.DataFrame, title: str, tz_label: str, initial_days: int = INITIAL_DAYS, order: list[str] = TARGET_ZONES) -> px.line:
+    
     """
     
     df_long: columns ["Date","Load (MW)","zone"] in display TZ.
     Includes 'SE_total' and 'SE1'..'SE4' in the same frame.
     
-    """
+    Returns: plotly Figure object.
     
-    # Put total first in legend
-    order = ["SE_total", "SE1", "SE2", "SE3", "SE4"]
+    """
     
     if "zone" in df_long.columns:
         df_long = df_long.copy()

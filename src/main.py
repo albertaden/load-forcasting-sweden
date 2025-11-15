@@ -60,12 +60,12 @@ def main():
         yearly_data = plot_df[plot_df["Date"].dt.year == year]
         max_load = yearly_data.sort_values(by="Load (MW)", ascending=False).iloc[0]
         max_loads.append({
-            "year": year,
+            "Year": year,
             "Date": max_load["Date"],
             "Load (MW)": max_load["Load (MW)"],
         })
 
-    yearly_peaks = pd.DataFrame(max_loads).sort_values("year")
+    yearly_peaks = pd.DataFrame(max_loads).sort_values("Year")
 
     yearly_peaks["Date"] = yearly_peaks["Date"].dt.strftime("%Y-%m-%d %H:%M")
     
