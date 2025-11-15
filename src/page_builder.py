@@ -4,7 +4,7 @@ from config import (
     DATA_DIR, ZONE_CODES, TARGET_ZONES
 )
 
-import datetime, UTC
+from datetime import datetime
 from zoneinfo import ZoneInfo
 
 
